@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="col-sm-6">
+        <img src="css/images/fruit.jpg">
+    </div>
+    <div clas="col-sm-6">
+        <h1>list of courses</h1>
+        <% offeredCourses.forEach(course =>{ %>
+        <h5>
+            <%= course.title %>
+        </h5>
+        <span>
+            $ <%= course.cost %>
+        
+        </span>
+      <%  }); %>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
