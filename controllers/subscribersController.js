@@ -66,14 +66,15 @@ module.exports = {
     },
     showView: (req, res) => {
 
-        res.render(subscribers / show);
+        res.render("subscribers/show");
 
     },
     edit: (req, res, next) => {
         let subscriberId = req.params.id;
+        console.log("asdasdasdasdasd");
         Subscriber.findById(subscriberId)
             .then(subscriber => {
-                res.render("/subscriber/edit", { subscriber: subscriber });
+                res.render("subscribers/edit", { subscriber: subscriber });
             })
             .catch(error => {
                 console.log(`error fetchign subscriber by id: ${error.message}`);
@@ -82,16 +83,16 @@ module.exports = {
     },
     update: (req, res, next) => {
         let subscriberId = req.params.id;
-        let updatedSubscriber = new Subscriber({
+        
+        Subscriber.findByIdAndUpdate(subscriberId, {
             name: req.body.name,
             email: req.body.email,
             zipCode: req.body.zipCode,
-        })
-        Subscriber.findByIdAndUpdate(subscriberId, updatedSubscriber)
-            .then(subscriber => {
 
+        })
+            .then(subscriber => {
                 res.locals.subscriber = subscriber;
-                res.locals.redirect = "/subscribers/${subscriber._id}";
+                res.locals.redirect = `/subscribers/${subscriber._id}`;
                 next();
 
             })

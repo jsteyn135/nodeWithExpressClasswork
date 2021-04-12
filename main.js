@@ -25,10 +25,10 @@ router.get("/",homeController.index);
 router.get("/subscribers",subscribersController.index, subscribersController.indexView);
 router.get("/subscribers/new",subscribersController.new);
 router.post("/subscribers/create",subscribersController.create, subscribersController.redirectView);
-router.get("/subscriber/:id", subscribersController.show, subscribersController.showView);
-router.get("/subscriber/:id/edit", subscribersController.edit);
-router.put("/subscriber/:id/update", subscribersController.update, subscribersController.redirectView);
-router.delete("/subscriber/:id/delete", subscribersController.delete, subscribersController.redirectView);
+router.get("/subscribers/:id", subscribersController.show, subscribersController.showView);
+router.get("/subscribers/:id/edit", subscribersController.edit);
+router.put("/subscribers/:id/update", subscribersController.update, subscribersController.redirectView);
+router.delete("/subscribers/:id/delete", subscribersController.delete, subscribersController.redirectView);
 
 router.get("/courses",coursesController.index, coursesController.indexView);
 router.get("/courses/new",coursesController.new);

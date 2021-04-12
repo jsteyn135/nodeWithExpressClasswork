@@ -1,4 +1,4 @@
-<h2 class="center">user Data for <% user.name %> </h2>
+<h2 class="center">user Data for <%= user.name.first %> </h2>
 
 <table class="table">
 
@@ -6,12 +6,15 @@
         <tr>
             <td> First Name</td>
             <td>
-                <% user.name.first %>
+                <%= user.name.first %>
             </td>
 
+            
+        </tr>
+        <tr>
             <td> Last Name</td>
             <td>
-                <% user.name.last %>
+                <%= user.name.last %>
             </td>
         </tr>
         <tr>
@@ -28,7 +31,7 @@
         </tr>
         <tr>
             <td>Num of Courses</td>
-            <td><%= users.courses.length %></td>
+            <td><%= user.courses.length %></td>
 
 
         </tr>

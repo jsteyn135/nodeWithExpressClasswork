@@ -70,23 +70,26 @@ module.exports = {
     },
     showView: (req, res) => {
 
-        res.render("/users/show");
+        res.render("users/show");
 
     },
     edit: (req, res, next) => {
         let userId = req.params.id;
+        //console.log("req.params.id = "+req.params.id);
         User.findById(userId)
             .then(user => {
                 res.render("users/edit", { user: user });
             })
             .catch(error => {
+                
                 console.log(`error fetchign user by id: ${error.message}`);
                 next(error);
             })
     },
     update: (req, res, next) => {
+        
         let userId = req.params.id;
-        let updatedUser = new User({
+        User.findOneAndUpdate(userId, {
             name:{
                 first: req.body.first,
                 last: req.body.last,
@@ -94,17 +97,17 @@ module.exports = {
             email: req.body.email,
             password: req.body.password,
             zipCode: req.body.zipCode,
-        })
-        User.findByIdAndUpdate(userId, updatedUser)
-            .then(user => {
 
+        })
+            .then(user => {
                 res.locals.user = user;
-                res.locals.redirect = "/user/${user._id}";
+                res.locals.redirect = `/users/${user._id}`;
+                
                 next();
 
             })
-            .catch(error => {
-
+            .catch(error => {// mega errors here
+                
                 console.log(`error fetchign user by id: ${error.message}`);
                 next();
             })

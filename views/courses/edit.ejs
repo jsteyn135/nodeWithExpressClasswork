@@ -1,13 +1,13 @@
 <div class="form-data">
-    <form action="/courses/${course._id}/update?_method=PUT" method="POST">
+    <form action="<%= `/courses/${course._id}/update?_method=PUT`%>" method="POST">
         <label for="txtTitle">title</label>
         <input type="text" name="title" id="txtTitle" autofocus required value="<% course.title %>">
 
         <label for="txtDescription">description</label>
-        <input type="text" name="description" id="txtDescription" required value="<% subscriber.description %>">
+        <input type="text" name="description" id="txtDescription" required value="<% course.description %>">
         
         <label for="txtMaxStudents">maxStudents</label>
-        <input type="text" name="maxStudent" id="txtMaxStudents" required value="<% subscriber.maxStudent %>">
+        <input type="text" name="maxStudent" id="txtMaxStudents" required value="<% course.maxStudent %>">
 
         <label for="txtCost">cost</label>
         <input type="text" name="cost" id="txtCost" required value="<% course.cost %>">

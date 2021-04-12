@@ -3,8 +3,8 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Email</th>
+            <th>Title</th>
+            <th>Description</th>
             <th>Edit</th>
             <th>Delete</th>
 
@@ -16,21 +16,21 @@
             <tr>
                 <td>
                     <a href="<%= `/course/$course._id` %>">
-                        <% course.title %>
+                        
                     </a>
-
+                    <%= course.title %>
                 </td>
                 <td>
                     <%= course.description %>
                 </td>
                 
                 <td>
-                    <a href="<%= `/course/${course._id}/edit` %>">
+                    <a href="<%= `/courses/${course._id}/edit` %>">
                     Edit
                     </a>
                 </td>
                 <td>
-                    <a href="<%= `/course/${course._id}delete?_method=DELETE` %>"
+                    <a href="<%= `courses/${course._id}/delete?_method=DELETE` %>"
                         onclick="return confirm('are you sure?')"
                         >
                     Delete

@@ -1,4 +1,4 @@
-<h2 class="center">Subscriber Data for <% subscriber.name %> </h2>
+<h2 class="center">Subscriber Data for <%= subscriber.name %> </h2>
 
 <table class="table">
 
@@ -6,7 +6,7 @@
         <tr>
             <td>Name</td>
             <td>
-                <% subscriber.name %>
+                <%= subscriber.name %>
             </td>
         </tr>
         <tr>
@@ -23,7 +23,7 @@
         </tr>
         <tr>
             <td>Num of Courses</td>
-            <td><%= subscribers.courses.length %></td>
+            <td><%= subscriber.courses.length %></td>
 
 
         </tr>

@@ -16,7 +16,7 @@
             <tr>
                 <td>
                     <a href="<%= `/subscriber/$subscriber._id` %>">
-                        <% subscriber.name %>
+                        <%= subscriber.name %>
                     </a>
 
                 </td>
@@ -32,7 +32,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="<%= `/subscriber/${subscriber._id}delete?_method=DELETE` %>"
+                    <a href="<%= `/subscribers/${subscriber._id}/delete?_method=DELETE` %>"
                         onclick="return confirm('are you sure?')"
                         >
                     Delete

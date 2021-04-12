@@ -64,33 +64,35 @@ module.exports = {
     },
     showView: (req, res) => {
 
-        res.render(courses / show);
+        res.render("courses/show");
 
     },
     edit: (req, res, next) => {
         let courseId = req.params.id;
         Course.findById(courseId)
             .then(course => {
-                res.render("/course/edit", { course: course });
+                res.render("courses/edit", { course: course });
             })
             .catch(error => {
+
                 console.log(`error fetchign course by id: ${error.message}`);
                 next(error);
             })
     },
     update: (req, res, next) => {
         let courseId = req.params.id;
-        let updatedCourse = new Course({
+        console.log("the course id:" + courseId);
+        Course.findByIdAndUpdate(courseId, {
+
             title: req.body.title,
             description: req.body.description,
             maxStudent: req.body.maxStudent,
             cost: req.body.cost,
-        })
-        Course.findByIdAndUpdate(courseId, updatedCourse)
-            .then(course => {
 
+        })
+            .then(course => {
                 res.locals.course = course;
-                res.locals.redirect = "/courses/${course._id}";
+                res.locals.redirect = `/courses/${course._id}`;
                 next();
 
             })
