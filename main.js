@@ -1,11 +1,31 @@
+//const cookieParser = require("cookie-parser");
+//const { Cookie } = require("express-session");
+
+
 const express = require("express"), app = express();
 router = express.Router(),
+
+passport = require("passport");
+cookieParser = require("cookie-parser");
+expressSession = require("express-session");
+expressValidator = require("express-validator");
+connectFlash = require("connect-flash");
+User = require("./models/user");
+router.use(expressValidator());
+
+
+
 homeController = require("./controllers/homeController");
 errorController = require("./controllers/errorController"),
 subscribersController = require("./controllers/subscribersController"),
 coursesController = require("./controllers/coursesController"),
 usersController = require("./controllers/usersController"),
 methodOverride = require("method-override");
+
+
+
+
+
 
 
 
@@ -19,8 +39,21 @@ app.set("view engine","ejs");
 router.use(layouts);
 
 
+
+router.use(passport.initialize());
+router.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+
+
+
 router.use(methodOverride("_method", {methods:["POST","GET"]}));
 router.get("/",homeController.index);
+
+
 
 router.get("/subscribers",subscribersController.index, subscribersController.indexView);
 router.get("/subscribers/new",subscribersController.new);
@@ -41,11 +74,17 @@ router.delete("/courses/:id/delete", coursesController.delete, coursesController
 
 router.get("/users",usersController.index, usersController.indexView);
 router.get("/users/new",usersController.new);
-router.post("/users/create",usersController.create, usersController.redirectView);
+router.post("/users/create",usersController.validate,usersController.create, usersController.redirectView);
+router.get("/users/login",usersController.login);
+router.post("/users/login",usersController.authenticate);
+router.get("/users/logout",usersController.logout,usersController.redirectView);
 router.get("/users/:id", usersController.show, usersController.showView);
 router.get("/users/:id/edit", usersController.edit);
-router.put("/users/:id/update", usersController.update, usersController.redirectView);
+router.put("/users/:id/update", usersController.validate,usersController.update, usersController.redirectView);
 router.delete("/users/:id/delete", usersController.delete, usersController.redirectView);
+
+
+
 
 
 
@@ -64,21 +103,31 @@ app.use(
 );
 
 router.use(express.json());
-//router.get("/", homeController.showIndex);
+
+router.use(cookieParser("my_passcode"));
+router.use(expressSession({
+    secret: "my_passcode",
+    cookie: {
+        maxAge: 360000
+
+    },
+    resave: false,
+    saveUnitiialized: false
+
+}));
+
+router.use((req,res,next) => {
+    res.locals.currentUser = req.user;
+    res.locals.flashMessages = req.flash();
+    res.locals.loggedIn = req.isAuthenticated();
+    
+});
+
+router.use(connectFlash());
 
 
 
 
-/*
-app.get("/courses", homeController.showCourses);
-app.get("/subscribers",subscribersController.getAllSubscribers);
-app.get("/contact",subscribersController.getSubscriptionPage);
-app.post("/subscribe",subscribersController.saveSubscriber);
-*/
-
-
-//app.get("/contact", homeController.showSignup);
-//app.post("/contact", homeController.postedSignUpForm);
 
 
 router.use(errorController.pageNotFoundError);
