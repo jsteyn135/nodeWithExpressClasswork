@@ -56,6 +56,12 @@ a {
   margin-bottom: 2px;
 }
 
+.invisible {
+  display: none;
+}
+
+
+
 .button:hover {
   background-color: #ffb99f;
   color: #ed4a0f;

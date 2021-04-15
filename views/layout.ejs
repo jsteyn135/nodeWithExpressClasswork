@@ -4,12 +4,14 @@
 
 <head>
     <title>Confetti Cuisine</title>
-    <link rel="stylesheet" href="/css/confetti_cuisine.css">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/confetti_cuisine.css">
 </head>
 
 <body>
+
     <div id="nav">
         <div class="col-sm nav-align">
             <h1>Confetti Cuisine</h1>
@@ -29,38 +31,37 @@
                 <span class="button">Users</span>
             </a>
         </div>
+
+        <div class="login">
+            <% if (loggedIn){ %>
+                <p>logged in as <a href="<%=`/users/${currentUser._id}`%>">
+
+                        <%= currentUser.fullName %>
+
+                    </a>
+                    <a href="/user/logout">log out</a>
+                </p>
+                <%} else { %>
+                    <a href="users/login">log in</a>
+                    <% } %>
+        </div>
     </div>
 
 
-    <div class="login">
-
-        <% if (locals.loggedIn){ %>
-            <p>logged in as <a href="<%=`/users/${currentUser._id}`%>">
-            
-            <%= currentUser.fullName %>
-            
-            </a>
-            <a href="/user/logout">log out</a>
-        </p>
-        <%} else { %>
-        <a href="users/login">log in</a>
-        <% } %>
-
-    </div>
 
 
 
-    <div class="flashes">
 
-        <% if (locals.flashMessages){ %>
+    <div class="flash">
 
-            <% if(locals.flashMessages.success){ %>
+        <% if (flashMessages){ %>
+            <% if(flashMessages.success){ %>
                 <div class="flash success">
-                    <%= locals.flashMessages.success %>
+                    <%= flashMessages.success %>
                 </div>
-                <%} else if(locals.flashMessages.error){ %>
+                <%} else if(flashMessages.error){ %>
                     <div class="flash error">
-                        <%= locals.flashMessages.error %>
+                        <%= flashMessages.error %>
                     </div>
                     <%}%>
 

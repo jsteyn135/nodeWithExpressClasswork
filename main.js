@@ -1,42 +1,63 @@
-//const cookieParser = require("cookie-parser");
-//const { Cookie } = require("express-session");
+"use strict";
 
-
-const express = require("express"), app = express();
+const express = require("express"), 
+app = express(),
 router = express.Router(),
-
-passport = require("passport");
-cookieParser = require("cookie-parser");
-expressSession = require("express-session");
-expressValidator = require("express-validator");
-connectFlash = require("connect-flash");
-User = require("./models/user");
-router.use(expressValidator());
-
-
-
-homeController = require("./controllers/homeController");
+layouts = require("express-ejs-layouts"),
+mongoose = require("mongoose"),
+methodOverride = require("method-override"),
+expressSession = require("express-session"),
+cookieParser = require("cookie-parser"),
+connectFlash = require("connect-flash"),
+expressValidator = require("express-validator"),
+passport = require("passport"),
+homeController = require("./controllers/homeController"),
 errorController = require("./controllers/errorController"),
 subscribersController = require("./controllers/subscribersController"),
 coursesController = require("./controllers/coursesController"),
 usersController = require("./controllers/usersController"),
-methodOverride = require("method-override");
+User = require("./models/user");
 
 
 
-
-
-
-
-
-layouts = require("express-ejs-layouts");
-mongoose = require("mongoose");
+mongoose.Promise =  global.Promise;
 mongoose.connect("mongodb://localhost:27017/confetti_cuisine",{useNewUrlParser: true});
-
+mongoose.set("useCreateIndex",true);
 
 app.set("port", process.env.PORT || 3000);
 app.set("view engine","ejs");
+
+
+
+
 router.use(layouts);
+
+router.use(express.static("public"));
+
+app.use(
+    express.urlencoded({
+        extended: false
+
+    })
+);
+
+
+
+
+router.use(methodOverride("_method", {methods:["POST","GET"]}));
+
+
+router.use(express.json());
+router.use(cookieParser("my_passcode123"));
+router.use(expressSession({
+    secret: "my_passcode123",
+    cookie: {
+        maxAge: 360000
+    },
+    resave: false,
+    saveUninitialized: false
+}));
+
 
 
 
@@ -48,10 +69,22 @@ passport.deserializeUser(User.deserializeUser());
 
 
 
+router.use(expressValidator());
+router.use(connectFlash());
+
+router.use((req,res,next) => {
+    res.locals.loggedIn = req.isAuthenticated();
+    res.locals.currentUser = req.user;
+    res.locals.flashMessages = req.flash();
+    next();
+});
 
 
-router.use(methodOverride("_method", {methods:["POST","GET"]}));
 router.get("/",homeController.index);
+app.use("/", router);
+
+
+
 
 
 
@@ -84,58 +117,8 @@ router.put("/users/:id/update", usersController.validate,usersController.update,
 router.delete("/users/:id/delete", usersController.delete, usersController.redirectView);
 
 
-
-
-
-
-
-
-
-
-
-router.use(express.static("public"));
-
-app.use(
-    express.urlencoded({
-        extended: false
-
-    })
-);
-
-router.use(express.json());
-
-router.use(cookieParser("my_passcode"));
-router.use(expressSession({
-    secret: "my_passcode",
-    cookie: {
-        maxAge: 360000
-
-    },
-    resave: false,
-    saveUnitiialized: false
-
-}));
-
-router.use((req,res,next) => {
-    res.locals.currentUser = req.user;
-    res.locals.flashMessages = req.flash();
-    res.locals.loggedIn = req.isAuthenticated();
-    
-});
-
-router.use(connectFlash());
-
-
-
-
-
-
 router.use(errorController.pageNotFoundError);
 router.use(errorController.internalServerError);
-
-
-
-app.use("/", router);
 
 
 

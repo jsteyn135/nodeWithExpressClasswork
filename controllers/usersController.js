@@ -1,12 +1,12 @@
 "use strict"
 
-const { render } = require("ejs");
+//const { render } = require("ejs");
 const User = require("../models/user");
 const passport = require("passport");
-const cookieParser = require("cookie-parser");
-const expressSession = require("express-session");
-const expressValidator = require("express-validator");
-const connectFlash = require("connect-flash");
+//const cookieParser = require("cookie-parser");
+//const expressSession = require("express-session");
+//const expressValidator = require("express-validator");
+//const connectFlash = require("connect-flash");
 
 
 let getUserParams = body => {
